@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>期货新闻汇总</title>
+    <title>期货新闻每日更新</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
-        h1 { color: #2e7d32; }
-        .links { margin: 30px 0; }
-        .links a { display: block; margin: 10px 0; font-size: 18px; color: #1976d2; }
-        .history { margin-top: 40px; }
-        .history h2 { color: #555; }
-        .history a { display: block; margin: 5px 0; color: #888; font-size: 14px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; padding: 40px; max-width: 800px; margin: 0 auto; background: #f5f5dc; color: #333; }
+        h1 { color: #b8860b; }
+        .link-list { list-style: none; padding: 0; }
+        .link-list li { margin: 15px 0; }
+        .link-list a { color: #2563eb; text-decoration: none; font-size: 1.2em; }
+        .link-list a:hover { text-decoration: underline; }
+        .history-section { margin-top: 40px; }
+        .history-section h2 { color: #666; }
+        .history-list { list-style: none; padding: 0; }
+        .history-list li { margin: 10px 0; }
+        .history-list a { color: #666; }
     </style>
 </head>
 <body>
-    <h1>🗞️ 期货新闻汇总</h1>
-    <p>基于最近24小时国际新闻的全品种期货分析</p>
+    <h1>🌐 最近24小时国际新闻 → 全品种分类判断</h1>
+    <ul class="link-list">
+        <li><a href="latest.html">📄 最新报告 (2026-03-10 04:00)</a></li>
+    </ul>
     
-    <div class="links">
-        <a href="latest.html">📄 最新报告 (2026-03-10 02:00 UTC)</a>
-    </div>
-    
-    <div class="history">
-        <h2>历史报告</h2>
-        <a href="history/report-2026-03-09-1800.html">2026-03-09 18:00 UTC</a>
-        <a href="history/report-2026-03-09-0200.html">2026-03-09 02:00 UTC</a>
-        <a href="history/report-2026-03-08-1800.html">2026-03-08 18:00 UTC</a>
-        <a href="history/report-2026-03-08-0200.html">2026-03-08 02:00 UTC</a>
+    <div class="history-section">
+        <h2>📚 历史报告</h2>
+        <ul class="history-list">
+            <li><a href="history/report-2026-03-10-0400.html">2026-03-10 04:00</a></li>
+        </ul>
     </div>
 </body>
 </html>
