@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>最近24小时国际新闻 → 全品种分类判断</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --panel-2: #182142;
+      --text: #e9eefc;
+      --muted: #aab6d3;
+      --line: #2b3766;
+      --up: #23c483;
+      --down: #ff6b6b;
+      --mid: #ffd166;
+      --accent: #7aa2ff;
+      --base-size: 15px;
+    }
+    body.theme-light {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-2: #f2f5fb;
+      --text: #1c2742;
+      --muted: #5b6788;
+      --line: #d7deef;
+      --up: #0f9f63;
+      --down: #d64545;
+      --mid: #bb8a00;
+      --accent: #3d6cff;
+    }
+    body.theme-eye {
+      --bg: #eef6ea;
+      --panel: #f6fbf2;
+      --panel-2: #edf6e7;
+      --text: #213224;
+      --muted: #56705b;
+      --line: #cdddc9;
+      --up: #198754;
+      --down: #c94a4a;
+      --mid: #9d7a00;
+      --accent: #5b7f59;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: var(--base-size);
+    }
+    .wrap { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .hero, .card { background: rgba(18,25,51,.92); border: 1px solid var(--line); border-radius: 16px; }
+    body.theme-light .hero, body.theme-light .card,
+    body.theme-eye .hero, body.theme-eye .card { background: var(--panel); }
+    .hero { padding: 24px; margin-bottom: 20px; }
+    h1,h2,h3 { margin: 0 0 12px; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.45rem; margin-top: 6px; }
+    h3 { font-size: 1.08rem; }
+    p, li { color: var(--muted); }
+    .toolbar {
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+      margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line);
+    }
+    .tool-group { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .nav {
+      display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;
+    }
+    .nav a {
+      text-decoration:none; border:1px solid var(--line); background: var(--panel-2); color: var(--text);
+      border-radius: 999px; padding: 7px 12px; font-size:.9rem;
+    }
+    button {
+      border:1px solid var(--line); background: var(--panel-2); color: var(--text);
+      border-radius: 10px; padding: 8px 12px; cursor:pointer; font-size: .95rem;
+    }
+    button.active { outline: 2px solid var(--accent); }
+    .grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 16px; }
+    .stat { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+    .stat .k { color: var(--muted); font-size: .8rem; }
+    .stat .v { font-size: 1.45rem; font-weight: 700; margin-top: 4px; }
+    .card { padding: 18px; margin-bottom: 18px; overflow: hidden; }
+    .sticky-tools { position: sticky; top: 0; z-index: 5; backdrop-filter: blur(8px); }
+    .searchbox {
+      width: 100%; max-width: 340px; border:1px solid var(--line); background: var(--panel-2); color: var(--text);
+      border-radius: 10px; padding: 10px 12px; font-size:.95rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    th, td { padding: 10px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { text-align: left; color: var(--text); background: var(--panel-2); position: sticky; top: 0; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+    .up { background: rgba(35,196,131,.15); color: var(--up); }
+    .down { background: rgba(255,107,107,.15); color: var(--down); }
+    .mid { background: rgba(255,209,102,.15); color: var(--mid); }
+    .section-note { margin: 8px 0 0; }
+    .cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; }
+    details { border:1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--panel-2); margin-top: 10px; }
+    summary { cursor: pointer; font-weight: 700; color: var(--text); }
+    .meta { display:flex; gap:16px; flex-wrap:wrap; color: var(--muted); font-size:.9rem; margin-top: 10px; }
+    .news-list li { margin-bottom: 10px; }
+    .news-list a { color: var(--accent); }
+    @media (max-width: 1100px) { .grid, .cols { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="theme-dark">
+  <div class="wrap">
+    <section class="hero" id="top">
+      <h1>最近24小时国际新闻 → 全品种分类判断</h1>
+      <p>基于与 PC75 的 3 轮往返讨论整理。核心结论：<b>油、运、金最强；股指最受压；有色分化（铝强铜弱）；农产品和黑色更多是被动映射。</b></p>
+      <div class="meta">
+        <span>生成内容：最近24小时国际新闻映射</span>
+        <span>整理方式：你 + PC75 三轮讨论</span>
+        <span>用途：日内 / 波段 / 历史回顾</span>
+      </div>
+      <div class="grid">
+        <div class="stat"><div class="k">最强主线</div><div class="v">能源</div></div>
+        <div class="stat"><div class="k">第二主线</div><div class="v">航运</div></div>
+        <div class="stat"><div class="k">最强避险</div><div class="v">黄金</div></div>
+        <div class="stat"><div class="k">最受压资产</div><div class="v">股指</div></div>
+      </div>
+      <div class="toolbar sticky-tools">
+        <div class="tool-group">
+          <strong>模式：</strong>
+          <button data-theme="theme-light">白天</button>
+          <button data-theme="theme-dark" class="active">黑夜</button>
+          <button data-theme="theme-eye">护眼</button>
+        </div>
+        <div class="tool-group">
+          <strong>字体：</strong>
+          <button data-size="14">A-</button>
+          <button data-size="15" class="active">A</button>
+          <button data-size="17">A+</button>
+          <button data-size="19">A++</button>
+        </div>
+        <div class="tool-group">
+          <input id="globalSearch" class="searchbox" placeholder="搜索品种/代码/分类/逻辑..." />
+        </div>
+      </div>
+      <div class="nav">
+        <a href="#ranking">八大类排序</a>
+        <a href="#top20">前20重点</a>
+        <a href="#overview">分类总览</a>
+        <a href="#news">相关新闻与链接</a>
+        <a href="#all">全部品种总表</a>
+      </div>
+    </section>
+
+    <section class="card" id="ranking">
+      <h2>八大类最终排序</h2>
+      <table class="filterable">
+        <thead><tr><th>排名</th><th>大类</th><th>最终判断</th><th>核心逻辑</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>能源</td><td><span class="tag up">偏多</span></td><td>中东冲突 + 霍尔木兹风险，直接抬升供给与运输溢价</td></tr>
+          <tr><td>2</td><td>航运</td><td><span class="tag up">偏多</span></td><td>航道风险、保费、绕航预期，直接受益</td></tr>
+          <tr><td>3</td><td>股指</td><td><span class="tag down">偏空</span></td><td>油价冲高 + 战争风险 + 通胀回流，压制风险资产估值</td></tr>
+          <tr><td>4</td><td>贵金属</td><td><span class="tag up">偏多</span></td><td>黄金受益于避险 + 通胀对冲，白银跟随但弱一些</td></tr>
+          <tr><td>5</td><td>国债</td><td><span class="tag mid">短多中分化</span></td><td>先吃避险，后受再通胀压制</td></tr>
+          <tr><td>6</td><td>有色</td><td><span class="tag mid">整体中性偏空</span></td><td>成本支撑 vs 需求走弱，内部明显分化</td></tr>
+          <tr><td>7</td><td>农产品</td><td><span class="tag mid">中性到中性偏多</span></td><td>目前主要是能源、物流外溢影响，油脂强于谷物</td></tr>
+          <tr><td>8</td><td>黑色</td><td><span class="tag down">中性偏空</span></td><td>这轮国际新闻对黑色没有独立强催化，更像被动承压</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="top20">
+      <h2>前20个最值得看的品种</h2>
+      <table class="filterable">
+        <thead><tr><th>排名</th><th>品种</th><th>代码</th><th>判断</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>原油</td><td>SC</td><td><span class="tag up">偏多</span></td><td>地缘与海峡风险最直接</td></tr>
+          <tr><td>2</td><td>黄金</td><td>AU</td><td><span class="tag up">偏多</span></td><td>避险 + 通胀对冲</td></tr>
+          <tr><td>3</td><td>燃料油</td><td>FU</td><td><span class="tag up">偏多</span></td><td>原油直接映射</td></tr>
+          <tr><td>4</td><td>低硫燃料油</td><td>LU</td><td><span class="tag up">偏多</span></td><td>油价 + 航运</td></tr>
+          <tr><td>5</td><td>液化石油气</td><td>PG</td><td><span class="tag up">偏多</span></td><td>中东油气风险直连</td></tr>
+          <tr><td>6</td><td>集运欧线</td><td>EC</td><td><span class="tag up">偏多</span></td><td>航道、绕航、保费</td></tr>
+          <tr><td>7</td><td>白银</td><td>AG</td><td><span class="tag mid">中性偏多</span></td><td>跟黄金但弱一点</td></tr>
+          <tr><td>8</td><td>石油沥青</td><td>BU</td><td><span class="tag mid">中性偏多</span></td><td>成本端受益</td></tr>
+          <tr><td>9</td><td>PTA</td><td>TA</td><td><span class="tag mid">中性偏多</span></td><td>原油链外溢</td></tr>
+          <tr><td>10</td><td>PX</td><td>PX</td><td><span class="tag mid">中性偏多</span></td><td>芳烃链跟油</td></tr>
+          <tr><td>11</td><td>乙二醇</td><td>EG</td><td><span class="tag mid">中性偏多</span></td><td>油化工传导</td></tr>
+          <tr><td>12</td><td>国际铜</td><td>BC</td><td><span class="tag down">中性偏空</span></td><td>全球增长担忧</td></tr>
+          <tr><td>13</td><td>铜</td><td>CU</td><td><span class="tag down">中性偏空</span></td><td>周期属性更受压</td></tr>
+          <tr><td>14</td><td>铝</td><td>AL</td><td><span class="tag mid">中性偏多</span></td><td>能源成本支撑，强于铜</td></tr>
+          <tr><td>15</td><td>氧化铝</td><td>AO</td><td><span class="tag mid">中性偏多</span></td><td>铝链延伸</td></tr>
+          <tr><td>16</td><td>棕榈油</td><td>P</td><td><span class="tag mid">中性偏多</span></td><td>油脂链最敏感</td></tr>
+          <tr><td>17</td><td>豆油</td><td>Y</td><td><span class="tag mid">中性偏多</span></td><td>油脂链逻辑</td></tr>
+          <tr><td>18</td><td>菜籽油</td><td>OI</td><td><span class="tag mid">中性偏多</span></td><td>油脂链逻辑</td></tr>
+          <tr><td>19</td><td>沪深300</td><td>IF</td><td><span class="tag down">偏空</span></td><td>风险资产承压</td></tr>
+          <tr><td>20</td><td>10年期国债</td><td>T</td><td><span class="tag mid">短线偏多、中段分化</span></td><td>避险先行，后看再通胀</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="overview">
+      <h2>分类总览</h2>
+      <details open>
+        <summary>能源 / 航运 / 贵金属</summary>
+        <p>这是当前最核心的三条线：能源最强，航运次强，黄金是避险与通胀对冲的核心受益者。</p>
+      </details>
+      <details>
+        <summary>有色 / 黑色</summary>
+        <p>有色整体偏二阶传导，内部表现为铝强铜弱；黑色目前没有来自国际新闻的独立强催化。</p>
+      </details>
+      <details>
+        <summary>农产品</summary>
+        <p>当前主要体现为能源与物流外溢影响，油脂强于谷物，谷物强于粕类。</p>
+      </details>
+      <details>
+        <summary>金融（股指 / 国债）</summary>
+        <p>股指是这轮国际新闻里最明确的受损大类之一；国债更像“先避险、后分化”的两阶段结构。</p>
+      </details>
+    </section>
+
+    <section class="card" id="news">
+      <h2>相关重要新闻与链接</h2>
+      <ul class="news-list">
+        <li><b>Iran Says It’s Close to Naming New Supreme Leader as Attacks on Infrastructure Grow</b> — NYT<br><span>逻辑：地缘升级、政局稳定性与能源设施风险上升。</span></li>
+        <li><b>Iran war spreading economic damage far beyond oil and gas markets</b> — Washington Post<br><span>逻辑：影响从油气外溢到运输、供应链与更广泛市场。</span></li>
+        <li><b>U.S. weighs sending special forces to seize Iran's nuclear stockpile</b> — Axios <span class="tag mid">需二次核实</span><br><span>逻辑：若属实，冲突升级层级明显抬升。</span></li>
+        <li><b>Trump’s ‘roaring’ economy meets a rough start to 2026: What the latest numbers show</b> — AP<br><span>逻辑：美国经济偏弱与高油价叠加，滞胀讨论升温。</span></li>
+      </ul>
+      <p class="section-note">说明：本页新闻区基于你与 PC75 的讨论结果整理，部分源标题来自公开可见聚合/媒体标题；如需严格逐条可点击链接版，后续可在报告生成时自动附上来源 URL 与时间戳。</p>
+    </section>
+
+    <section class="card" id="all">
+      <h2>全部品种总表（放在最下面）</h2>
+      <p class="section-note">按你的要求，完整品种总表统一放在页面最下方，方便先看重点、最后再看全量。</p>
+      <table class="filterable">
+        <thead><tr><th>分类</th><th>品种</th><th>代码</th><th>判断</th><th>备注</th></tr></thead>
+        <tbody>
+          <tr><td>能源</td><td>原油</td><td>SC</td><td><span class="tag up">偏多</span></td><td>全市场最核心映射品种</td></tr>
+          <tr><td>能源</td><td>燃料油</td><td>FU</td><td><span class="tag up">偏多</span></td><td>跟油最紧</td></tr>
+          <tr><td>能源</td><td>低硫燃料油</td><td>LU</td><td><span class="tag up">偏多</span></td><td>油价 + 航运双映射</td></tr>
+          <tr><td>能源</td><td>液化石油气</td><td>PG</td><td><span class="tag up">偏多</span></td><td>中东油气风险最直接</td></tr>
+          <tr><td>能源</td><td>石油沥青</td><td>BU</td><td><span class="tag mid">中性偏多</span></td><td>成本端利多</td></tr>
+          <tr><td>能源</td><td>PTA</td><td>TA</td><td><span class="tag mid">中性偏多</span></td><td>原油链外溢</td></tr>
+          <tr><td>能源</td><td>PX</td><td>PX</td><td><span class="tag mid">中性偏多</span></td><td>芳烃链跟油价</td></tr>
+          <tr><td>能源</td><td>乙二醇</td><td>EG</td><td><span class="tag mid">中性偏多</span></td><td>化工成本端受益</td></tr>
+          <tr><td>能源</td><td>纯苯</td><td>BZ</td><td><span class="tag mid">中性偏多</span></td><td>油化工成本逻辑</td></tr>
+          <tr><td>能源</td><td>聚乙烯</td><td>L</td><td><span class="tag mid">中性</span></td><td>成本与需求对冲</td></tr>
+          <tr><td>能源</td><td>聚丙烯</td><td>PP</td><td><span class="tag mid">中性</span></td><td>同上</td></tr>
+          <tr><td>能源</td><td>苯乙烯</td><td>EB</td><td><span class="tag mid">中性</span></td><td>偏成本驱动</td></tr>
+          <tr><td>能源</td><td>甲醇</td><td>MA</td><td><span class="tag mid">中性</span></td><td>能源与需求博弈</td></tr>
+          <tr><td>能源</td><td>丙烯</td><td>PL</td><td><span class="tag mid">中性偏多</span></td><td>成本端跟随</td></tr>
+          <tr><td>能源</td><td>短纤</td><td>PF</td><td><span class="tag mid">中性</span></td><td>传导较弱</td></tr>
+          <tr><td>能源</td><td>瓶片</td><td>PR</td><td><span class="tag mid">中性偏多</span></td><td>聚酯链延伸</td></tr>
+          <tr><td>能源</td><td>PVC</td><td>V</td><td><span class="tag down">中性偏空</span></td><td>地产链拖累</td></tr>
+          <tr><td>能源</td><td>尿素</td><td>UR</td><td><span class="tag mid">中性</span></td><td>国际映射有限</td></tr>
+          <tr><td>能源</td><td>纯碱</td><td>SA</td><td><span class="tag mid">中性</span></td><td>主要看国内链条</td></tr>
+          <tr><td>能源</td><td>玻璃</td><td>FG</td><td><span class="tag down">中性偏空</span></td><td>地产链偏弱</td></tr>
+          <tr><td>能源</td><td>烧碱</td><td>SH</td><td><span class="tag mid">中性</span></td><td>国际映射一般</td></tr>
+          <tr><td>能源</td><td>动力煤</td><td>ZC</td><td><span class="tag mid">中性</span></td><td>更看国内政策</td></tr>
+          <tr><td>航运</td><td>集运欧线</td><td>EC</td><td><span class="tag up">偏多</span></td><td>仅次于能源的直接受益方向</td></tr>
+          <tr><td>贵金属</td><td>黄金</td><td>AU</td><td><span class="tag up">偏多</span></td><td>避险 + 通胀对冲</td></tr>
+          <tr><td>贵金属</td><td>白银</td><td>AG</td><td><span class="tag mid">中性偏多</span></td><td>跟黄金，但弱于黄金</td></tr>
+          <tr><td>贵金属</td><td>铂</td><td>PT</td><td><span class="tag mid">中性偏多</span></td><td>贵金属属性受益</td></tr>
+          <tr><td>贵金属</td><td>钯</td><td>PD</td><td><span class="tag mid">中性</span></td><td>工业属性对冲避险属性</td></tr>
+          <tr><td>有色</td><td>国际铜</td><td>BC</td><td><span class="tag down">中性偏空</span></td><td>更贴全球风险偏好</td></tr>
+          <tr><td>有色</td><td>铜</td><td>CU</td><td><span class="tag down">中性偏空</span></td><td>增长担忧压制最明显</td></tr>
+          <tr><td>有色</td><td>铝</td><td>AL</td><td><span class="tag mid">中性偏多</span></td><td>能源成本支撑，强于铜</td></tr>
+          <tr><td>有色</td><td>氧化铝</td><td>AO</td><td><span class="tag mid">中性偏多</span></td><td>铝链成本逻辑更顺</td></tr>
+          <tr><td>有色</td><td>铸造铝合金</td><td>AD</td><td><span class="tag mid">中性偏多</span></td><td>跟铝链偏强</td></tr>
+          <tr><td>有色</td><td>锌</td><td>ZN</td><td><span class="tag mid">中性</span></td><td>跟有色整体波动</td></tr>
+          <tr><td>有色</td><td>铅</td><td>PB</td><td><span class="tag mid">中性</span></td><td>更偏自身供需</td></tr>
+          <tr><td>有色</td><td>镍</td><td>NI</td><td><span class="tag down">中性偏空</span></td><td>风险偏好下降更受伤</td></tr>
+          <tr><td>有色</td><td>锡</td><td>SN</td><td><span class="tag down">中性偏空</span></td><td>电子链需求偏弱</td></tr>
+          <tr><td>新能源金属</td><td>工业硅</td><td>SI</td><td><span class="tag down">中性偏空</span></td><td>不属于这轮直接受益线</td></tr>
+          <tr><td>新能源金属</td><td>碳酸锂</td><td>LC</td><td><span class="tag down">中性偏空</span></td><td>更多看新能源自身供需</td></tr>
+          <tr><td>新能源材料</td><td>多晶硅</td><td>PS</td><td><span class="tag down">中性偏空</span></td><td>国际新闻映射不强</td></tr>
+          <tr><td>黑色</td><td>铁矿石</td><td>I</td><td><span class="tag down">中性偏空</span></td><td>全球风险偏好走弱拖累</td></tr>
+          <tr><td>黑色</td><td>焦炭</td><td>J</td><td><span class="tag down">中性偏空</span></td><td>跟黑色链整体</td></tr>
+          <tr><td>黑色</td><td>焦煤</td><td>JM</td><td><span class="tag down">中性偏空</span></td><td>同上</td></tr>
+          <tr><td>黑色</td><td>螺纹钢</td><td>RB</td><td><span class="tag down">中性偏空</span></td><td>主要还是内需逻辑</td></tr>
+          <tr><td>黑色</td><td>线材</td><td>WR</td><td><span class="tag down">中性偏空</span></td><td>跟螺纹类似</td></tr>
+          <tr><td>黑色</td><td>热轧卷板</td><td>HC</td><td><span class="tag down">中性偏空</span></td><td>制造业预期承压</td></tr>
+          <tr><td>黑色</td><td>不锈钢</td><td>SS</td><td><span class="tag down">中性偏空</span></td><td>镍 + 制造业双拖累</td></tr>
+          <tr><td>冶金</td><td>硅铁</td><td>SF</td><td><span class="tag down">中性偏空</span></td><td>国际新闻弱映射</td></tr>
+          <tr><td>冶金</td><td>锰硅</td><td>SM</td><td><span class="tag down">中性偏空</span></td><td>同上</td></tr>
+          <tr><td>油脂油料</td><td>棕榈油</td><td>P</td><td><span class="tag mid">中性偏多</span></td><td>油脂链最容易受原油情绪带动</td></tr>
+          <tr><td>油脂油料</td><td>豆油</td><td>Y</td><td><span class="tag mid">中性偏多</span></td><td>油脂链偏强</td></tr>
+          <tr><td>油脂油料</td><td>菜籽油</td><td>OI</td><td><span class="tag mid">中性偏多</span></td><td>同属油脂链</td></tr>
+          <tr><td>油脂油料</td><td>豆粕</td><td>M</td><td><span class="tag mid">中性偏多</span></td><td>成本传导，但不是主线</td></tr>
+          <tr><td>油脂油料</td><td>菜籽粕</td><td>RM</td><td><span class="tag mid">中性偏多</span></td><td>跟粕类逻辑</td></tr>
+          <tr><td>油脂油料</td><td>豆一</td><td>A</td><td><span class="tag mid">中性偏多</span></td><td>天气 + 油料链预期</td></tr>
+          <tr><td>油脂油料</td><td>豆二</td><td>B</td><td><span class="tag mid">中性偏多</span></td><td>跟外盘大豆</td></tr>
+          <tr><td>油脂油料</td><td>油菜籽</td><td>RS</td><td><span class="tag mid">中性偏多</span></td><td>油料链延伸</td></tr>
+          <tr><td>谷物</td><td>玉米</td><td>C</td><td><span class="tag mid">中性偏多</span></td><td>主要是成本/物流传导</td></tr>
+          <tr><td>谷物</td><td>玉米淀粉</td><td>CS</td><td><span class="tag mid">中性</span></td><td>跟玉米</td></tr>
+          <tr><td>谷物</td><td>强麦</td><td>WH</td><td><span class="tag mid">中性偏多</span></td><td>物流与地缘外溢更敏感</td></tr>
+          <tr><td>谷物</td><td>普麦</td><td>PM</td><td><span class="tag mid">中性偏多</span></td><td>同上</td></tr>
+          <tr><td>谷物</td><td>粳米</td><td>RR</td><td><span class="tag mid">中性</span></td><td>国际映射较弱</td></tr>
+          <tr><td>谷物</td><td>粳稻</td><td>JR</td><td><span class="tag mid">中性</span></td><td>国际映射较弱</td></tr>
+          <tr><td>谷物</td><td>晚籼稻</td><td>LR</td><td><span class="tag mid">中性</span></td><td>国际映射较弱</td></tr>
+          <tr><td>谷物</td><td>早籼稻</td><td>RI</td><td><span class="tag mid">中性</span></td><td>国际映射较弱</td></tr>
+          <tr><td>其他农产</td><td>白糖</td><td>SR</td><td><span class="tag mid">中性偏多</span></td><td>农产品情绪支撑，但非主线</td></tr>
+          <tr><td>其他农产</td><td>棉花</td><td>CF</td><td><span class="tag down">中性偏空</span></td><td>风险偏好下降不利</td></tr>
+          <tr><td>其他农产</td><td>棉纱</td><td>CY</td><td><span class="tag down">中性偏空</span></td><td>跟棉花和纺服需求</td></tr>
+          <tr><td>其他农产</td><td>花生</td><td>PK</td><td><span class="tag mid">中性偏多</span></td><td>油脂油料情绪带动</td></tr>
+          <tr><td>其他农产</td><td>鸡蛋</td><td>JD</td><td><span class="tag mid">中性</span></td><td>国内供需主导</td></tr>
+          <tr><td>其他农产</td><td>生猪</td><td>LH</td><td><span class="tag mid">中性</span></td><td>国际映射弱</td></tr>
+          <tr><td>其他农产</td><td>苹果</td><td>AP</td><td><span class="tag mid">中性</span></td><td>国内供需主导</td></tr>
+          <tr><td>其他农产</td><td>红枣</td><td>CJ</td><td><span class="tag mid">中性</span></td><td>国内供需主导</td></tr>
+          <tr><td>股指</td><td>沪深300</td><td>IF</td><td><span class="tag down">偏空</span></td><td>风险资产整体承压</td></tr>
+          <tr><td>股指</td><td>中证500</td><td>IC</td><td><span class="tag down">偏空</span></td><td>中盘成长更受伤</td></tr>
+          <tr><td>股指</td><td>中证1000</td><td>IM</td><td><span class="tag down">偏空</span></td><td>高弹性风险资产受压最大</td></tr>
+          <tr><td>股指</td><td>上证50</td><td>IH</td><td><span class="tag down">偏空</span></td><td>权重相对抗跌但仍承压</td></tr>
+          <tr><td>国债</td><td>2年期国债</td><td>TS</td><td><span class="tag mid">短线偏多</span></td><td>先吃避险</td></tr>
+          <tr><td>国债</td><td>5年期国债</td><td>TF</td><td><span class="tag mid">短线偏多</span></td><td>先吃避险</td></tr>
+          <tr><td>国债</td><td>10年期国债</td><td>T</td><td><span class="tag mid">短线偏多、中段分化</span></td><td>先避险后看通胀</td></tr>
+          <tr><td>国债</td><td>30年期国债</td><td>TL</td><td><span class="tag mid">短线偏多、中段分化</span></td><td>对风险偏好最敏感</td></tr>
+          <tr><td>橡胶</td><td>20号胶</td><td>NR</td><td><span class="tag down">中性偏空</span></td><td>宏观偏弱压制需求</td></tr>
+          <tr><td>橡胶</td><td>天然橡胶</td><td>RU</td><td><span class="tag down">中性偏空</span></td><td>同上</td></tr>
+          <tr><td>橡胶</td><td>丁二烯橡胶</td><td>BR</td><td><span class="tag mid">中性</span></td><td>成本与需求对冲</td></tr>
+          <tr><td>林业</td><td>原木</td><td>LG</td><td><span class="tag mid">中性</span></td><td>国际新闻映射弱</td></tr>
+          <tr><td>林业</td><td>纤维板</td><td>FB</td><td><span class="tag mid">中性</span></td><td>国内供需主导</td></tr>
+          <tr><td>林业</td><td>胶合板</td><td>BB</td><td><span class="tag mid">中性</span></td><td>国内供需主导</td></tr>
+          <tr><td>其他</td><td>纸浆</td><td>SP</td><td><span class="tag mid">中性</span></td><td>国际映射较弱</td></tr>
+          <tr><td>其他</td><td>胶版印刷纸</td><td>OP</td><td><span class="tag mid">中性</span></td><td>弱相关</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+  <script>
+    const body = document.body;
+    const themeButtons = document.querySelectorAll('[data-theme]');
+    const sizeButtons = document.querySelectorAll('[data-size]');
+    const searchInput = document.getElementById('globalSearch');
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        themeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        body.className = btn.dataset.theme;
+        localStorage.setItem('report-theme', btn.dataset.theme);
+      });
+    });
+
+    sizeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sizeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.documentElement.style.setProperty('--base-size', btn.dataset.size + 'px');
+        localStorage.setItem('report-font-size', btn.dataset.size);
+      });
+    });
+
+    const applyFilter = (keyword) => {
+      const q = keyword.trim().toLowerCase();
+      document.querySelectorAll('table.filterable tbody tr').forEach(tr => {
+        const text = tr.innerText.toLowerCase();
+        tr.style.display = text.includes(q) ? '' : 'none';
+      });
+    };
+    searchInput.addEventListener('input', e => applyFilter(e.target.value));
+
+    const savedTheme = localStorage.getItem('report-theme');
+    const savedSize = localStorage.getItem('report-font-size');
+    if (savedTheme) {
+      const btn = document.querySelector(`[data-theme="${savedTheme}"]`);
+      if (btn) btn.click();
+    }
+    if (savedSize) {
+      const btn = document.querySelector(`[data-size="${savedSize}"]`);
+      if (btn) btn.click();
+    }
+  </script>
+</body>
+</html>
