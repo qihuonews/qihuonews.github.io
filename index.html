@@ -3,76 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>期货新闻 - 国际新闻与全品种分析</title>
+    <title>期货新闻 - 全品种分类判断</title>
     <style>
-        :root {
-            --bg-color: #e8f5e9;
-            --text-color: #2e7d32;
-            --card-bg: #ffffff;
-            --border-color: #a5d6a7;
-            --accent: #43a047;
-        }
-        body.day { --bg-color: #f5f5f5; --text-color: #333; --card-bg: #fff; --border-color: #ddd; --accent: #1976d2; }
-        body.night { --bg-color: #1a1a1a; --text-color: #e0e0e0; --card-bg: #2d2d2d; --border-color: #444; --accent: #81c784; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .toolbar a, .toolbar button {
-            padding: 8px 16px;
-            border: 1px solid var(--border-color);
-            background: var(--card-bg);
-            color: var(--text-color);
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .toolbar a:hover, .toolbar button:hover { background: var(--accent); color: white; }
-        h1 { border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-        .links { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 20px; }
-        .link-card { padding: 15px; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color); }
-        .link-card a { color: var(--accent); font-weight: bold; text-decoration: none; }
-        .link-card a:hover { text-decoration: underline; }
-        .link-date { font-size: 12px; color: #666; margin-top: 5px; }
+        :root { --bg-color: #e8f5e9; --text-color: #2e7d32; --highlight: #1b5e20; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-color); max-width: 800px; margin: 0 auto; padding: 40px 20px; line-height: 1.8; }
+        h1 { border-bottom: 3px solid var(--highlight); padding-bottom: 15px; }
+        a { color: var(--highlight); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .card { background: #fff; border: 2px solid #a5d6a7; padding: 20px; margin: 20px 0; border-radius: 12px; }
+        .btn { display: inline-block; background: var(--highlight); color: white; padding: 12px 24px; border-radius: 8px; margin: 10px 10px 10px 0; }
     </style>
 </head>
-<body class="eye-protect">
-    <div class="toolbar">
-        <button onclick="document.body.className='eye-protect'">护眼</button>
-        <button onclick="document.body.className='day'">白天</button>
-        <button onclick="document.body.className='night'">黑夜</button>
-    </div>
-
-    <h1>📊 期货新闻 - 国际新闻与全品种分析</h1>
+<body>
+    <h1>🗞️ 国际新闻 → 期货品种判断</h1>
+    <p>基于最近24小时国际重大新闻，自动生成期货品种走势判断。</p>
     
-    <h2>最新报告</h2>
-    <div class="links">
-        <div class="link-card">
-            <a href="latest.html">📰 最新: 2026-03-09 23:00</a>
-            <div class="link-date">刚更新</div>
-        </div>
+    <div class="card">
+        <h2>📄 最新报告</h2>
+        <a href="latest.html" class="btn">查看最新分析</a>
     </div>
 
-    <h2>历史报告</h2>
-    <div class="links">
-        <div class="link-card">
-            <a href="history/report-2026-03-09-2300.html">📰 2026-03-09 23:00</a>
-            <div class="link-date">2026-03-09</div>
-        </div>
-        <div class="link-card">
-            <a href="history/report-2026-03-09-2100.html">📰 2026-03-09 21:00</a>
-            <div class="link-date">2026-03-09</div>
-        </div>
+    <div class="card">
+        <h2>📚 历史报告</h2>
+        <ul>
+            <li><a href="history/report-2026-03-10-0000.html">2026-03-10 00:00</a></li>
+            <li><a href="history/report-2026-03-09-2301.html">2026-03-09 23:01</a></li>
+        </ul>
     </div>
 
-    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: #666; font-size: 12px;">
-        <p>本页面由自动化系统生成，仅供参考</p>
-    </footer>
+    <div class="card">
+        <h2>💡 说明</h2>
+        <ul>
+            <li>数据来源：FT Markets, CNBC, Oilprice, BBC 等</li>
+            <li>每日更新</li>
+            <li>仅供參考，不构成投资建议</li>
+        </ul>
+    </div>
 </body>
 </html>
