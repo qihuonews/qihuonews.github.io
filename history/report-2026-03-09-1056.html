@@ -131,12 +131,7 @@
           <button data-theme="theme-eye">护眼</button>
         </div>
         <div class="tool-group">
-          <strong>字体：</strong>
-          <button data-size="14">A-</button>
-          <button data-size="15" class="active">A</button>
-          <button data-size="17">A+</button>
-          <button data-size="19">A++</button>
-        </div>
+          <strong>字体：</strong> <button id="fontMinus">A-</button> <button id="fontReset" class="active">A++</button> <button id="fontPlus">A+</button></div>
         <div class="tool-group">
           <input id="globalSearch" class="searchbox" placeholder="搜索品种/代码/分类/逻辑..." />
         </div>
@@ -359,15 +354,15 @@
     searchInput.addEventListener('input', e => applyFilter(e.target.value));
 
     const savedTheme = localStorage.getItem('report-theme');
-    const savedSize = localStorage.getItem('report-font-size');
-    if (savedTheme) {
-      const btn = document.querySelector(`[data-theme="${savedTheme}"]`);
-      if (btn) btn.click();
-    }
-    if (savedSize) {
-      const btn = document.querySelector(`[data-size="${savedSize}"]`);
-      if (btn) btn.click();
-    }
-  </script>
+    const minSize=12,maxSize=28,defaultSize=19;
+function setFont(size){const s=Math.max(minSize,Math.min(maxSize,size));document.documentElement.style.setProperty('--base', s+'px');localStorage.setItem(location.pathname.includes('index')?'index-font-size':'report-font-size', String(s));}
+const key=location.pathname.includes('index')?'index-font-size':'report-font-size';
+const fm=document.getElementById('fontMinus'), fp=document.getElementById('fontPlus'), fr=document.getElementById('fontReset');
+if(fm) fm.addEventListener('click',()=>{const cur=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--base'))||defaultSize; setFont(cur-1);});
+if(fp) fp.addEventListener('click',()=>{const cur=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--base'))||defaultSize; setFont(cur+1);});
+if(fr) fr.addEventListener('click',()=> setFont(defaultSize));
+const savedSize = localStorage.getItem(key);
+if(savedSize) setFont(parseInt(savedSize)); else setFont(defaultSize);
+</script>
 </body>
 </html>
