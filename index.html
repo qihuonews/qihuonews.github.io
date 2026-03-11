@@ -5,27 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>期货新闻 - 全品种分析</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #e8f5e9; color: #2e7d32; }
-        h1 { border-bottom: 3px solid #1976d2; padding-bottom: 10px; }
-        a { color: #1976d2; }
-        .latest { background: rgba(25,118,210,0.1); padding: 20px; border-radius: 10px; margin: 20px 0; }
-        .history { margin-top: 30px; }
-        .history ul { list-style: none; padding: 0; }
-        .history li { padding: 5px 0; border-bottom: 1px solid #ddd; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 { color: #e94560; }
+        .card {
+            background: #16213e;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid #0f3460;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #e94560;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px;
+            font-size: 1.2em;
+        }
+        .btn:hover { background: #d63850; }
+        .history-list { text-align: left; }
+        .history-list a { color: #e94560; }
     </style>
 </head>
 <body>
-    <h1>🗞️ 期货新闻 - 全品种分析</h1>
-    <div class="latest">
-        <h2>📰 最新报告</h2>
-        <p><a href="latest.html">👉 最近24小时国际新闻 → 全品种分类判断</a></p>
-        <p>生成时间: 2026-03-11 15:00 (Asia/Shanghai)</p>
+    <h1>📊 期货新闻 - 全品种分析</h1>
+    
+    <div class="card">
+        <h2>最新报告</h2>
+        <a href="latest.html" class="btn">📈 查看最新分析</a>
+        <p>生成时间: 2026-03-11 16:00 (UTC+8)</p>
     </div>
-    <div class="history">
-        <h2>📚 历史报告</h2>
-        <ul>
-            <li><a href="history/report-2026-03-11-1500.html">2026-03-11 15:00</a></li>
-        </ul>
+
+    <div class="card">
+        <h2>📁 历史报告</h2>
+        <div class="history-list">
+            <p>• <a href="history/report-2026-03-11-1600.html">2026-03-11 16:00</a></p>
+        </div>
     </div>
 </body>
 </html>
