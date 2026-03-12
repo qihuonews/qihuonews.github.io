@@ -3,30 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>期货新闻汇总 - 国际新闻与全品种判断</title>
+    <title>期货新闻 - 国际新闻与全品种分析</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 20px; line-height: 1.6; background: #f5f5dc; }
-        h1 { text-align: center; color: #2c3e50; }
-        .card { background: white; border-radius: 12px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .link-list { list-style: none; padding: 0; }
-        .link-list li { margin: 15px 0; }
-        .link-list a { display: block; padding: 15px; background: #3498db; color: white; text-decoration: none; border-radius: 8px; transition: transform 0.2s; }
-        .link-list a:hover { transform: translateY(-2px); }
-        .link-list .date { font-size: 0.85em; opacity: 0.8; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #1a1a2e; color: #e0e0e0; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        h1 { color: #00d4ff; text-align: center; }
+        .card { background: #16213e; border: 1px solid #0f3460; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        a { color: #00d4ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .btn { display: inline-block; padding: 12px 24px; background: #00d4ff; color: #000; border-radius: 6px; margin: 10px 5px; }
+        .history-list { list-style: none; padding: 0; }
+        .history-list li { padding: 10px; border-bottom: 1px solid #0f3460; }
+        .timestamp { color: #888; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <h1>📊 期货新闻汇总</h1>
-    <div class="card">
+    <h1>📊 期货新闻 - 国际新闻与全品种分析</h1>
+    
+    <div class="card" style="text-align: center;">
         <h2>最新报告</h2>
-        <ul class="link-list">
-            <li><a href="latest.html">📰 最近24小时国际新闻 → 全品种分类判断 <span class="date">(2026-03-12 06:15)</span></a></li>
-        </ul>
+        <p>最近24小时国际新闻 → 全品种分类判断</p>
+        <a href="latest.html" class="btn">查看最新报告 →</a>
     </div>
+
     <div class="card">
         <h2>历史报告</h2>
-        <ul class="link-list">
-            <li><a href="history/report-2026-03-12-0600.html">📁 2026-03-12 06:00</a></li>
+        <ul class="history-list">
+            <li><a href="history/report-2026-03-12-1000.html">2026-03-12 10:00</a> <span class="timestamp">最新</span></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>使用说明</h2>
+        <ul>
+            <li>本页面每整点自动更新</li>
+            <li>点击"查看最新报告"获取最近24小时的全品种分析</li>
+            <li>页面支持：护眼/白天/黑夜模式切换，字体大小调整</li>
         </ul>
     </div>
 </body>
