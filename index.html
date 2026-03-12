@@ -2,38 +2,18 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>期货新闻更新 - 首页</title>
+    <title>期货新闻汇总</title>
     <style>
-        :root { --bg-color: #e8f5e9; --text-color: #2e7d32; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1 { border-bottom: 2px solid #a5d6a7; padding-bottom: 10px; }
-        a { color: #1b5e20; }
-        .link-box { background: #fff; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #a5d6a7; }
-        .history-list { list-style: none; padding: 0; }
-        .history-list li { padding: 10px; border-bottom: 1px solid #a5d6a7; }
+        body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f5f5dc; }
+        h1 { color: #2c5f2d; }
+        .btn { display: block; padding: 15px; margin: 10px 0; background: #fff; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; color: #333; }
+        .btn:hover { background: #e8f5e9; }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>📊 期货新闻更新</h1>
-    <div class="link-box">
-        <h2>📰 最新报告</h2>
-        <p><a href="latest.html">→ 2026-03-12 21:10 最新期货新闻分析</a></p>
-    </div>
-    <div class="link-box">
-        <h2>📁 历史报告</h2>
-        <ul class="history-list">
-            <li><a href="history/report-2026-03-12-2110.html">2026-03-12 21:10</a></li>
-            <li><a href="history/report-2026-03-12-2020.html">2026-03-12 20:20</a></li>
-            <li><a href="history/report-2026-03-12-2000.html">2026-03-12 20:00</a></li>
-            <li><a href="history/report-2026-03-12-1900.html">2026-03-12 19:00</a></li>
-            <li><a href="history/report-2026-03-11-2000.html">2026-03-11</a></li>
-            <li><a href="history/report-2026-03-10-2000.html">2026-03-10</a></li>
-            <li><a href="history/report-2026-03-09-2000.html">2026-03-09</a></li>
-        </ul>
-    </div>
-</div>
+    <h1>📊 期货新闻汇总</h1>
+    <a class="btn" href="latest.html">📰 最新报告 (2026-03-12)</a>
+    <h2>历史报告</h2>
+    <a class="btn" href="history/report-2026-03-12-2210.html">📁 2026-03-12 22:10</a>
 </body>
 </html>
